@@ -1,2 +1,1 @@
-# .github
-AlphaBoundary — Quantitative Research Workstation for Crypto Perpetuals
+AlphaBoundary — A quantitative research workstation for crypto perpetual futures. Local compute, statistical rigor, zero-code strategy validation.
