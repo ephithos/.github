@@ -1,9 +1,3 @@
-Honnêtement, je pense que ton README actuel est **trop modeste** par rapport à ce que tu construis.
-
-Il donne l'impression d'un framework de backtesting, alors que, d'après tout ce que nous avons conçu ensemble, AlphaBoundary est beaucoup plus proche d'un **Operating System for Quantitative Research** spécialisé sur les marchés crypto.
-
-Je partirais sur quelque chose comme ça.
-
 ---
 
 # AlphaBoundary
