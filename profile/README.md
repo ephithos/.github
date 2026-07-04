@@ -19,10 +19,10 @@
 - AI Research Assistant (3-layer: docs, analysis, experimental guidance)
 
 ## Quick Start
-[3 commandes ou 3 clics]
+
 
 ## Documentation
-[Liens vers les dossiers /docs]
+
 
 ## License / Pricing
 [Freemium + 199 USD/mois]
