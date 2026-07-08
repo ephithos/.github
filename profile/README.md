@@ -57,6 +57,8 @@ Generic models fail in crypto. Crypto‑native models survive.
 | **Edge Discovery** | Bayesian (TPE) / Random. Walk‑forward calibration. | User‑coded scripts. Requires manual programming. | Manual tweaking. |
 | **Overfitting Detection** | Built‑in DSR, PSR, CPCV/PBO. Blocks deploy if PBO > 50 %. | Requires custom implementation. | None. |
 | **Compute Architecture** | Local C# Agent. Zero cloud fees, unlimited runs. | Cloud Pay‑per‑hour ($0.15–$0.30/h). | Lightweight cloud. |
+| **Parallelism Control** | **User‑configurable CPU cores** (e.g., 6/8 cores). Balance performance and system responsiveness. | Fixed cloud instance cores. Upgrading costs more. | Fixed / low parallelism. |
+| **Execution Persistence** | **Headless background daemon.** Strategy runs even when UI is closed. Re‑open to see real‑time PnL. | Depends on cloud agent; UI closure may interrupt live view. | Often tied to the open app/tab. |
 | **Live Parity** | Bit‑identical. Tick/L5 matches live executor. | Good, but limited. OHLC vs tick divergence remains. | Poor. |
 | **Online Adaptation** | Dynamic φ‑Overlay. Corrects signal weights in live. | Static. Requires manual re‑calibration. | Static. |
 | **Quant Copilot** | LLM + RAG. Actionable diagnostics. | Raw logs + Community forums. | Generic support. |
@@ -75,15 +77,18 @@ To genuinely discover and maintain a non‑overfitted edge, a serious trader tra
 | **Monthly Total** | **$250 – $800+** | **$99** |
 | **Annual Cost** | **$3,000 – $9,600+** | **$1,188** |
 
+**Economic Resilience** — Because compute is local and data sync is incremental (only downloading missing partitions, e.g., 0 bytes downloaded for 725 checked files), heavy usage by power users does **not** increase our server costs. We can afford unlimited calibrations at a fixed price.
+
 ---
 
 ## Core Research Modules (At a Glance)
 
-- **Data Layer** — Real‑time tick ingestion, L5–L20 depth synchronisation, local encrypted storage (Parquet + DuckDB), and incremental sync with zero cloud data fees.
+- **Data Layer** — Real‑time tick ingestion, L5–L20 depth synchronisation, local encrypted storage (Parquet + DuckDB), and **incremental sync** (only downloads deltas). No cloud data fees.
 - **Alpha Research** — 88+ features across 8 groups (trend, momentum, mean reversion, volatility, microstructure, derivatives, cross‑asset, composite) with regime‑aware scoring and HMM state detection.
 - **Calibration** — Bayesian (TPE), Random, and Multi‑Period search with walk‑forward validation and parameter robustness analysis.
 - **Statistical Validation** — DSR, PSR, CPCV/PBO, Monte Carlo (block, i.i.d., shuffle), EVT (Extreme Value Theory), Stress Testing (cost sweeps, adverse regimes, jitter), and cross‑regime validation.
-- **Execution** — Event‑driven, bit‑identical live parity, maker/taker modes, and comprehensive risk guardrails (max notional, order‑rate limits, stale‑data blocks, trailing drawdown locks).
+- **Execution Engine** — Event‑driven, bit‑identical live parity, maker/taker modes, and comprehensive risk guardrails (max notional, order‑rate limits, stale‑data blocks, trailing drawdown locks). **Headless background execution** ensures strategies continue trading even when the UI is closed. Re‑open the dashboard to see equity, PnL, open positions, and margin in real time.
+- **User‑Configurable Parallelism** — Through the Settings panel, users can cap the number of CPU cores allocated for backtesting, IC, and calibration (e.g., 6 out of 8 cores). This balances computational throughput against system responsiveness, offering flexibility for laptops (low core count) to high‑end workstations (unleashing full power) without incurring extra cloud costs.
 - **Live Monitoring & Adaptation** — Rolling IC per group/regime, CUSUM drift charts, and a dynamic φ‑overlay (Shadow → Gated → Live correction) that learns from market behaviour without rewriting the strategy.
 - **Quant Copilot** — A multi‑layer LLM assistant (RAG + detection + open‑ended LLM) that explains metrics, diagnoses failures, and recommends actionable parameter adjustments.
 
@@ -97,14 +102,16 @@ To genuinely discover and maintain a non‑overfitted edge, a serious trader tra
 - **Crypto‑Native** — Built exclusively for perpetual futures, not adapted from equities.
 - **Explain Every Decision** — The Quant Copilot ensures you never stare at a raw number without context.
 - **Zero‑Code Research** — Institutional‑grade quant research, accessible without writing Python or C#.
+- **Resilient by Design** — The execution engine runs as a background daemon; the UI is a viewer. A closed laptop or crashed front‑end does not interrupt your live strategy.
+- **User‑Controlled Compute** — You choose how much of your CPU to dedicate to heavy jobs, preserving your machine's responsiveness while maximising throughput.
 
 ---
 
 ## Technology Stack
 
-- **C#** — High‑performance local execution agent (struct/value types, low GC).
-- **Node.js / React / TypeScript** — Backend orchestration and modern desktop UI.
-- **DuckDB + Parquet** — Columnar storage for massive tick/L2 historical datasets.
+- **C#** — High‑performance local execution agent (struct/value types, low GC, headless capable).
+- **Node.js / React / TypeScript** — Backend orchestration and modern desktop UI (viewer for the headless agent).
+- **DuckDB + Parquet** — Columnar storage for massive tick/L2 historical datasets with incremental sync.
 - **MongoDB** — Operational state and job orchestration.
 - **LLM (RAG)** — Quant Copilot for contextual assistance.
 
@@ -117,13 +124,14 @@ To genuinely discover and maintain a non‑overfitted edge, a serious trader tra
 - ✅ Calibration (Bayesian/TPE) + DSR/PBO validation live.
 - ✅ Signal Monitoring + Overlay Control (Shadow/Gated) production‑ready.
 - ✅ Local C# Agent fully integrated.
+- ✅ Headless background execution & user‑configurable CPU parallelism active.
 - 📅 Commercial release planned — Freemium / Professional / Enterprise tiers available.
 
 ---
 
 ## The One‑Sentence Takeaway
 
-> *"We do not sell you a backtest or a bot. We sell a statistical feedback system: you design the hypothesis, we validate it rigorously with PBO/DSR, we execute it faithfully with bit‑identical parity, and we correct it dynamically via an online φ‑overlay as the market evolves — without requiring you to write a single line of code to adapt it."*
+> *"We do not sell you a backtest or a bot. We sell a statistical feedback system: you design the hypothesis, we validate it rigorously with PBO/DSR, we execute it faithfully with bit‑identical parity (even when the UI is closed), and we correct it dynamically via an online φ‑overlay as the market evolves — without requiring you to write a single line of code to adapt it."*
 
 AlphaBoundary is built for traders who understand that edge is rare, fragile, and non‑stationary. It is the infrastructure of a quant desk, packaged for the independent professional. No data fees. No compute bills. No coding. Just statistical truth.
 
